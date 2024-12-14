@@ -1,0 +1,40 @@
+## entity type and value of type attribute
+ - NAME
+     - value of TYPE attribute
+        - PATIENT: patient
+        - DOCTOR: doctor
+        - USERNAME: username
+ - PROFESSION
+ - LOCATION
+     - value of TYPE attribute
+        - ROOM: room
+        - DEPARTMENT: department 
+        - HOSPITAL: hospital
+        - ORGANIZATION: organization
+        - STREET: street
+        - CITY: city
+        - STATE: state
+        - COUNTRY: country
+        - ZIP: ZIP
+        - LOCATION-OTHER: other
+ - AGE
+ - DATE
+ - CONTACT
+     - value of TYPE attribute
+        - PHONE: telephone
+        - FAX: fax
+        - EMAIL: email
+        - URL: URL
+        - IPADDR: IP address
+ - ID
+     - value of TYPE attribute
+         - SSN
+         - MEDICALRECORD: record id
+         - HEALTHPLAN: health plan/insurance id
+         - ACCOUNT: account number
+         - LICENSE: certificate/license number
+         - VEHICLE: car id
+         - DEVICE: device id
+         - BIOID: biometric id
+         - IDNUM: other id number
+ - OTHER

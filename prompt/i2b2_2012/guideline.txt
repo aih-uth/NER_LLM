@@ -1,0 +1,313 @@
+## 2.1 EVENT
+In addition to temporal expressions marked by the TIMEX3 tag, we need to mark events that are mentioned or described in the text, which is done using the EVENT tag. In a medical record, anything that is relevant to the patient’s clinical timeline is an event. These include clinical concepts, such as laboratory tests, medical problems, administered or proposed treatments, diagnoses, patient’s complaints and so on (see Section 3). EVENTS also have attributes, including:
+• type (occurrence/evidential/test/problem/treatment/clinical_dept)
+• polarity (positive or negative),
+You will need to identify all the EVENTs in a clinical record, and specify the values for the above three attributes values for each EVENT. For example:
+
+<EVENT>Admission</EVENT> Date:
+  <TIMEX3>09/14/2001</TIMEX3>
+  <EVENT>Discharge</EVENT> Date:
+  <TIMEX3>09/21/2001</TIMEX3>
+ This 56 year old male patient <EVENT>complained</EVENT> of <EVNET>increasing chest pains</EVENT> over the last <TIMEX3>three to four weeks</TIMEX3> prior to his <EVENT>admission</EVENT>.
+ Initially the <EVENT>pain</EVENT> was only occational, and happened <TIMEX3>every few days</TIMEX3> lasting <TIMEX3>twenty to forty seconds</TIMEX3>.
+ At <TIMEX3>noon 09/17/01</TIMEX3>, the patient was started on <EVENT>Diltiazem</EVENT> 120mg <TIMEX3>q.d.</TIMEX3> after <EVENT>calling</EVENT> his cardiologist.
+ 
+  -  [Admission] is clearly a clinically important action, so it needs to be marked as an event. All attributes of this EVENT should be left at their default values.
+ - [Discharge] is also an event. All attribute values are default.
+ - [complained] describes the patient’s action of reporting a symptom, which is also a piece of clinically significant information. It should therefore be marked as an event. Its type is “EVIDENTIAL” because the word “complain” here specifies the source of information, that is, that it is something reported by the patient. All the other attribute values are default.
+ - [increasing chest pains] is a symptom. Its type attribute should be “PROBLEM”. All the other attribute values are default.
+ - Note that whenever we mark an event, we include the entire base noun phrase in the span of the event. However, any prepositional phrases that are part of the noun phrase should not be marked. For example: The patient has [an intermittent cough] with a small amount of sputum.
+ - [admission] appears again in this text. Even though it refers to the same event as the first time, we still need to annotate it. All attributes are default.
+  - [pain] also needs to be annotated as an event. . Its type attribute is “PROBLEM”. All the other attribute values are default.
+ - Note: the verb “started” here is NOT marked as an event, because it does not provide new information about the patient’s clinical timeline. The only information that the verb “started” conveys is that the medication Diltiazem is stated at a certain time, which can be fully expressed by using a “BEGUN_BY” TLINK (see Section 2.3 for details).
+ - “Diltiazem” is a treatment (medication). Its “type” attribute is “TREATMENT”. All the other attribute values are default.
+ - “calling” is an EVENT. When we mark a verbal EVENT, we usually just mark the verb itself. All the other attribute values are default.
+ 
+ ## 2.2 TIMEX3
+Temporal expressions are phrases that contain time information. The types of temporal expressions that we need to mark include date, time, duration and frequency. We use the TIMEX3 tag to annotate a temporal expression (below the term TIMEX3 and “temporal expression” are used interchangeably). A TIMEX3 tag has three main attributes: type (date/time/duration/frequency), val (value of the TIMEX3) and mod (more, less, approximate and so on). See Appendix 1 for a quick summary of these attributes and their values along with illustrating examples.
+You will need to identify all the TIMEX3s in a clinical record, and specify the three attribute values for them. For example, the TIMEX3s in the following sample text are marked in red. Note that due to the nature of clinical notes, the texts that we will be annotating will often contain typos, grammatical errors, sentence fragments, ad-hoc abbreviations and many other deviations from the standard written English, which you will need to take into account during the annotation.
+
+
+# 3 Clinically Relevant Events: The <Event> Tag
+We use the EVENT tag to mark the events mentioned or described in the medical record that are significant to the patient’s clinical timeline. These include but are not limited to the symptoms, diseases, treatments, tests, events involving admission/transfer/discharge to(from) clinical departments, and so on. Below are some examples:
+	- The patient was [transfused] with [radiated Leuco] three units .
+	- The patient was previously [admitted] for [cardiac and pulmonary disease] . 
+	- Dr. Lawrence performed [the surgery] .
+This section is divided into two subsections. Section 3.1 introduces how to mark an EVENT. It contains instructions on how to decide whether a phrase is an EVENT or not, and how to determine the span of an EVENT. Section 3.2 introduces the attributes of the EVENT tag, including type, polarity, and modality.
+
+## 3.1 How to Annotate EVENTs
+- What is an EVENT?
+	Candidates for EVENTs include verb phrases, adjective phrases, noun phrases, and in some cases, even adverbs. Naturally, verb phrases that describe clinically relevant actions are considered EVENTs. For example, in “the patient reports a headache”, the verb “reports” refers to a clinically relevant action of the patient’s complaint, and hence is counted as an EVENT. More examples for verbal EVENTs can be found in section 3.1.2 below. An adjective phrase can be an EVENT, too, if it describes a clinically relevant state of the patient. For example, in “the patient is stable after the surgery”, the adjective “stable” is an EVENT. A Noun phrase can also be an EVENT if a) it is a clinical concept (treatment, problem, test or clinical department), e.g., the phrase “a headache” in the example above is considered an EVENT, because it is a clinical problem; or b) it is the noun form of an action or a state, e.g., in “on admission, the patient swallows with difficulty”, “admission” is an EVENT because it is the noun form of a clinically relevant action –“admit”; the word “difficulty”, describing a state of swallowing, is also an EVENT. Similarly, adverbs can be marked as EVENTs if they are the adverb form of an action or a state, e.g. in “reportedly, the patient is doing well”, both “reportedly”, the adverb form of a “report” action, and “well”, the adverb form of a state, are considered as EVENTs.
+	So far, it may sound as if everything can be an EVENT. Then what is the ultimate test to determine whether a phrase is an EVENT or not? A general test that we can use is to see a) whether the phrase is clinically important to the current medical record, and b) whether the phrase can be anchored to a clinical timeline. If both answers to the two questions are yes, then the phrase is most likely an EVENT (with few exceptions, such as dosage information, which we will explicitly point out in the paragraphs below). For example, in “the patient speaks only Spanish and was admitted ...”, the words “speaks” or “Spanish” are not quite relevant in the clinical sense, and thus, will not be marked as EVENTs; the phrase “the patient” is clinically relevant, but it refers to a person (in contrast to an action or state), and cannot be anchored to a timeline, and hence is not an EVENT, either.
+
+ - How do we annotate an EVENT?
+	As we have seen in Section 2.6, each EVENT “consumes” a string of text. The text associated to an EVENT is called the “span” of the EVENT. As we have said, EVENTs are usually phrases or words. Thus, the following are NOT allowed in EVENT annotation under this guideline: 1) Overlapping spans. Two EVENTs sharing a common word are not allowed. For example, in “the patient [swallows with [difficulty]]”, marking both “swallows with difficulty” and “difficulty” as EVENTs is not valid, and the correct annotation should be “[swallow] with [difficulty]. 2) Span across two or more sentences. A span that is assigned across sentences is not valid. In another word, an EVENT must be a continuous string of text within a single sentence.
+
+ - What not to mark as EVENTs?
+	Besides the general test of EVENT that we provided above, there are some additional rules, or exceptions to the general test.
+		- 1) The dosage information of medication or other treatment, and the numerical result of a clinical test are not included in the EVENT span. For example, in “the patient was given three units of [blood transfusion]”, “blood transfusion” is a clinical treatment and needs to be marked as an EVENT, but the dosage information “3 units of” should not be included in the EVENT span.3 Similarly, in “on [admission], [his hematocrit] is 26.8.”, the numeric value of “26.8” is not marked as EVENTs either.
+		- 2) Location of a clinical problem/test/treatment within the patient’s body is not marked as an EVENT, for a similar reason as above. For example, in “he was [diagnosed] with [needle biopsy] on either side of the prostate”, the location “on either side of the prostate” is not marked as EVENTs.
+		- 3) Some verbs whose sole purpose is to introduce another verb/noun/adjective/adverb phrase, is not marked as an EVENT. Auxiliary verbs, such as “be”, “has”, “may”, “will” and so on, fall into this category. For example, in “on [admission], [his hematocrit] is 26.8.”, the auxiliary verb “is” is not an EVENT. There are other verbs that are also used to introduce other phrases. For example, in “the patient was given 3 units of [blood transfusion]”, the word “given” does not provide any additional information, but rather just introduces the [blood transfusion] EVENT, and hence, it should not be marked as an EVENT.
+			- Dr. Lawrence performed [the surgery].
+				(The word “performed” here should not be marked as an EVENT, because the purpose of this word is just to introduce the EVENT “surgery”. Adding “perform” as an EVENT would not provide any additional information.)
+			- He underwent [radical retropubic prostatectomy].
+				(Similar to the previous example, the word “underwent” should not be marked as an EVENT, either.)
+		- 4) Aspectual words, such as “start”, “begin”, initiate“, stop”, “remove” and so on, are not marked as EVENTs. Instead, we will use TLINKs to express the temporal relation that they convey. (Please refer to Section 7.3 for detail).
+			- [Enteral feedings] were initiated on 05-24-99 .
+				(“initiate” does not need to be marked as an EVENT. We will use a TLINK ([Enteral feedings] BEGUN_BY [05-24-99]) to describe the “initiate” relation.)
+So far, we have talked about the general definitions and rules for EVENT annotation. In the following subsections, we will discuss further details of each class of EVENTs, the rules of determining EVENT spans, and give more examples to help you better understand the concept. Section 3.1.1. talks about annotating EVENTS related to clinical concepts, namely, clinical problems, tests, and treatments. Section 3.1.2 describes how to annotate EVENTs corresponding to the patient’s stays in different clinical units within the hospital. Section 3.1.3 discusses the spans of other verb/noun/adjective/adverb EVENTs.
+
+### 3.1.1 EVENTs Related to Medical Concepts
+Some EVENTs in clinical narrative require special attention during the annotation. These are EVENTs that are based on clinical concepts, including tests, problems and treatments. Tests include the exams, laboratory tests, and their results. Problems include symptoms, complaints, diseases, and diagnoses. Treatments include medications, surgeries and other procedures. During the annotation, when you encounter a concept that falls into one of these categories, you need to mark it as an EVENT and indicate which of the three categories (tests /problems /treatment ) it belongs to in the EVENT type field.
+Tests include any clinical lab tests, exams, and their results. When you annotate test EVENTs, you just mark the test name, not the numerical result values. For example:
+	- A [CT scan] showed that she had...
+	- On admission, the patient had a [white blood cell count] of 43,700.
+Problems include the patient’s complaints, symptoms, diseases and diagnoses. For example:
+	- Patient had [respiratory distress].
+	- She reported some [shortness of breath].
+Make sure that each EVENT corresponds to a single concept, e.g. in “she denies fever, chills or headache”, [fever], [chills] and [headache] denote separate EVENTs, so grouping them into a single EVENT would be incorrect.
+Treatments include medications and other procedures. As with tests, we only mark the name of the medication, but not the dosage. Here are some examples:
+	- She was given further [mechanical ventilatory support]
+	- On 8/30/2001, the patient was [extubated] in the operating room [Ativan] p.r.n. was given for this.
+
+### 3.1.2 EVENTs Related to Clinical Departments
+We also mark as EVENTs patients’ stays in different clinical units within the hospital. The clinical units involved in the patient’s treatment present important information about the patient’s clinical timeline, and thus need to be annotated. The type attribute for such events is clinical_dept., and it is used to mark the clinical unit/service/practice name. For example, if the text mentions that a patient was admitted to the emergency room, then to ICU and then to the medical floor, we will mark [emergency room], [ICU] and [medical floor] as EVENTs, and the event type will be clinical_dept. Here are some more examples:
+	- The patient underwent an uncomplicated recovery in the [intensive care unit].
+	- The patient was taken to the [operating room] and underwent an orthotopic liver transplant .
+
+### 3.1.3 Other EVENTs
+In this section, we will discuss the annotation of EVENTs that do not belong to the clinical concept category in 3.1.1. We separate them according to their part of speech, and call them verb phrases, noun phrases, adjectival phrases, and adverbs.
+ - Verb phrases
+	We annotate verb phrases as EVENTs if they convey clinically important information. When we mark a verbal phrase as an EVENT, we usually just mark the main verb. Below are some examples.
+		- The patient [reports] [the pain] began at 4:00 p.m. 
+		- The patient will [follow-up] with [Cardiology].
+	Note that some verbs whose only purpose is to introduce other EVENTs, do not need to be marked.
+		- Ativan p.r.n. was given for this. (“given” should not be annotated)
+		- The patient underwent an uncomplicated recovery in the [intensive care unit]. (“underwent” should not be annotated.)
+
+ - Adjectival phrases
+	EVENTs usually express state information about the patient. When annotating adjectival phrases, we include both the adjective and its modifying adverb (except “no” or “not”).
+		- At that time , [the pain] was [unremitting].
+		- She was never [hypoxic]. (“never” should not be included) 
+		- This would occur whenever he was [awake].
+
+ - Adverbs
+	Sometimes, we will mark adverbs as EVENTs as well. For adverb EVENTs, we mark the full adverbial phrase.
+		- The patient did [very well] in the postoperative course.
+		- The patient [reportedly] had chest pain. ([reportedly] is an evidential EVENT.)
+
+ - Noun phrases
+	When we annotate noun phrases as EVENTs, we take the entire base noun phrase. Prepositional phrases within the noun phrase should not be included in the same span.
+		- She also has [a cough] with a small amount of [white sputum].
+		- This is a 65-year-old female with a history of [recent exacerbation] of [lower extremity edema]
+
+## 3.2 Attributes for EVENT
+Just marking the span of each EVENT is not enough. In order for the annotation to be useful in text analysis, we need to describe each EVENT in more detail. These details are coded in the 3 attributes of the EVENT tag, including type, polarity, and modality.
+
+### 3.2.2 Type attribute
+As outlined above, we will use six EVENT types to categorize different kinds of EVENTs: TEST, PROBLEM, TREATMENT, CLINICAL_DEPT, EVIDENTIAL and OCCURRENCE. The first three values correspond to different categories of clinical concept EVENTs (clinical tests, symptoms, diagnoses, medications, surgeries and so on). The CLINICAL_DEPT value is used to mark the clinical units that the patient is admitted into. The EVIDENTIAL type is for EVENTs that have an ‘evidential’ nature, that is, if the EVENT describes the source of the information (e.g. CT [shows], the patient [complained] and so on). If an EVENT does not fall in to the above five categories, it will be marked as an “occurrence” – OCCURRENCE is the default value for EVENT type. In our data, TEST, PROBLEM, and TREATMENT EVENTs will be pre-annotated, based on previous manual annotation of clinical concepts in this data.
+
+#### 3.2.2.1 TEST
+The “TEST” EVENT type is used for clinical tests (laboratory and physical), and test results. When tagging a TEST EVENT, we annotate the full name of test (or test result) but we don’t include the numerical test result value. For example, in “White blood count is 380”, we mark “white blood count” as an EVENT, but do not include the value 380. Here are some examples of TEST EVENTs:
+	- [His preoperative workup] was completed and included [a hematocrit] of 42 .
+			(Both [His preoperative workup] and [a hematocrit] are “TEST” type EVENTs. Note that the numerical value of the hematocrit test result is not included in the EVENT span.)
+
+#### 3.2.2.2 PROBLEM
+The “PROBLEM” EVENT type includes patient’s complaints, symptoms, diseases, and diagnoses. Below are some more examples of PROBLEM EVENTs:
+	- The patient is a 69 year old [diabetic] who underwent [an APR] in 1995 for [rectal carcinoma]
+		(Both [diabetic] and [rectal carcinoma] are “PROBLEM” type EVENTs, while [an APR] is a TREATMENT.)
+
+#### 3.2.2.3 TREATMENT
+The “TREATMENT” EVENT type includes medications, surgeries and other procedures. Similarly to “TEST” EVENTs, we only mark the name of medication, but not the dosage information. For example, in “Levaquin 750 mg p.o. q. day”, we just annotate “Levaquin” as a TREATMENT EVENT. Below are some more examples of TREATMENT EVENTs:
+	- He underwent [exploratory laparotomy] and [left hepatectomy] and [cholecystectomy]
+		([exploratory laparotomy], [left hepatectomy] and [cholecystectomy] are all TREATMENTs.)
+
+#### 3.2.2.4 CLINICAL_DEPT
+The “CLINICAL_DEPT” type is used to mark the clinical unit/service/practice name. During the patients’ hospital course, they usually get transferred to different practice units, e.g. a patient may arrive in the emergency room first and then be transferred to the ICU, and then to the medical floor. These transfers are important information about the patient’s clinical timeline, and thus need to be annotated. Please refer to the examples below:
+	- The patient underwent an uncomplicated recovery in the [intensive care unit].
+	- The patient was taken to the [operating room] and underwent an orthotropic liver transplant .
+
+#### 3.2.2.5 EVIDENTIAL
+Verbs of showing, reporting or demonstrating should be annotated as EVENTs, as the source of information can be just as important as the information itself in a clinical context. Evidential EVENTs are represented by verbs (or noun/adjective derived from these verbs) that specify the source of information:
+	- The patient [reportedly] had [chest pain].
+		([reportedly] is an EVIDENTIAL EVENT.)
+	- [His arterial blood gas] [showed] [a respiratory acidosis] with [a PCO2] of 71 .
+		([showed] is an EVIDENTIAL EVENT.)
+	- He [complains] of headache.
+		([complains] is an EVIDENTIAL EVENT)
+
+#### 3.2.2.6 OCCURRENCE
+Occurrence is the default value for EVENT types. It is used for all the other kinds of clinically relevant events that occur/happen to the patient. Below is an example of OCCURRENCE EVENT:
+	- He was [readmitted] for [sternal wound infection]
+		([readmitted] is an OCCURRENCE EVENT)
+
+### 3.2.3 Polarity attribute
+The polarity attribute marks whether an EVENT is positive or negative. For example, in “the patient reports headache, and denies chills”, the EVENT [headache] is positive in its polarity, and the EVENT [chills] is negative in its polarity. Each EVENT must be either POS (positive) or NEG (negative). Since fewer EVENTs are negative, the default value for EVENT polarity in the MAE tool is POS.
+
+#### 3.2.3.1 POS
+Most of the EVENTs have POS polarity value, that is, the EVENT is not negated. It is to be noted that an EVENT can be POS even if it did not actually occur (e.g. if the EVENT is hypothetical, or proposed.)
+	- The patient [reportedly] had [chest pain].
+	- [His arterial blood gas] [showed] [a respiratory acidosis] with [a PCO2] of 71.
+	- He was [readmitted] for [sternal wound infection]
+	- [Surgical option] was [suggested] by the doctor. But the family [decided] to follow [conservative treatment] after [discussion].
+		(All of the EVENTS above have POS polarity. Note that judging from the context, the [Surgical option] in the last example did not actually happen, nonetheless, the polarity of [Surgical option] is still POS, because it is not negated in the sentence.)
+
+#### 3.2.3.2 NEG
+If an EVENT is negated by words such as “not”, “deny”, and so on, its polarity is NEG.
+	- He [felt] [well] without [fevers] , [chills] or [rigors] .
+		(The polarity for [fevers] , [chills] and [rigors] is NEG.)
+
+### 3.2.4 Modality attribute
+The modality attribute is used to describe whether an EVENT actually occurred or not. Annotation of modality is adapted from the i2b2 2010 challenge guidelines for assertion annotation.4 Recall that the polarity attribute simply marks whether an EVENT is negated in the sentence or not. In the example, “[Surgical option] was [suggested] by the doctor.”, the “[Surgical option]” EVENT has a POS polarity, but the EVENT did not actually happen. In order for us to differentiate these EVENTs from EVENTs that actually occurred, the contextual modality attribute is introduced.
+The modality attribute can take four possible values: FACTUAL, CONDITIONAL, POSSIBLE and PROPOSED. FACTUAL is assigned to EVENTs that actually happened (or will happen) or absolutely didn’t happen (or won’t happen). Both CONDITIONAL and POSSIBLE EVENTs are hypothesized to have or will occur(red). PROPOSED is assigned to EVENTs that are suggested, or recommended but may or may not happen.
+
+#### 3.2.4.1 FACTUAL
+This value is assigned to facts, i.e. EVENTs that actually happened (is happening, or will happen). For EVENTs with NEGATIVE polarity, this value corresponds to the situation when something did not happen (is not happening, or will not happen). The default value for the modality attribute is FACTUAL.
+
+#### 3.2.4.2 CONDITIONAL
+This value is assigned to EVENTs that are hypothesized to happen under certain conditions. This value should be used both for (1) an EVENT that may happen under certain conditions, and (2) an EVENT that serves as a condition for another EVENT occurring.
+	- [Ativan] 0.25 to 0.5 mg IV q 4 to 6 hours prn [anxiety]
+		(Both Ativan and anxiety are CONDITIONAL events – they may or may not happen)
+	- If the patient experiences [wheezing] or [shortness of breath], administer [oxygen] through a nasal tube
+		([wheezing], [shortness of breath], and [oxygen] are all CONDITIONAL events)
+	- The patient has [coughing spells] when he [climbs] three flights of stairs .
+		(Note that neither [coughing spells] or [climbs] are CONDITIONAL, because we know for a fact that they had actually happened. They are both FACTUAL)
+
+#### 3.2.4.3 POSSIBLE
+This value is assigned to EVENTs that are hypothesized to have occurred. It should be used to annotate EVENTs that are likely or possible, guesses or conjectures by doctors, etc.
+	- This is very likely to be [an asthma exacerbation].
+		([an asthma exacerbation] is POSSIBLE event.)
+	- Doctors suspect [an infection] of the lungs.
+	- We suspect this is not [pneumonia]
+	- This is probably not [cancer]
+			([an infection], [pneumonia] and [cancer] are POSSIBLE events)
+
+#### 3.2.4.4 PROPOSED
+The “PROPOSED” modality type is assigned to EVENTs that are proposed or suggested but may or may not actually happen. Typical examples of “proposed” EVENTs include patient’s preferences and doctor’s recommendations.
+	- The infectious disease service 's [recommendations] included [tapering the steroids]
+		([tapering the steroids] is a PROPOSED EVENT.)
+
+# 4 Temporal Expressions: The <TIMEX3> Tag
+In this section, we describe how to identify and annotate temporal expressions. Temporal expressions include all references to points in time, time periods, durations, and frequencies. You will need to mark up all the text spans that contain such references. For example:
+	- His hematocrit was checked [two weeks] prior to admission
+	- She reports a 5 pound weight loss over [the past several months]
+	- The patient was brought to the operating room on [05-04-1998].
+
+## 4.1 How to annotate TIMEX3
+Determining the span for TIMEX3 is straightforward. We just mark the entire temporal expression. The prepositions before or after the temporal expression phrase are usually not included in the TIMEX3 span. We will mark four types of temporal expressions: date, time, duration and frequency. We will discuss each type in the next section. Here are some examples of temporal expressions we will need to annotate:
+	- He had decompensation of his cirrhosis in [2005]
+	- Within [the first few days] after the surgery , his liver function tests were elevated 
+	- She has been ambulating on her own [several times a day] .
+	
+## 4.2 Attributes for TIMEX3
+The TIMEX3 tag contains three attributes. The type attribute specifies if the temporal expression is a date, time, duration or frequency. The val attribute quantifies the value of the temporal expression. Finally, the mod attribute adds additional modifying information about the temporal expression.
+
+### 4.2.1 Type attribute
+The type attribute has four possible values: DATE, TIME, DURATION and FREQUENCY.
+
+#### 4.2.1.1 DATE
+Date is the most common temporal expression in the discharge summaries that we will work with. Any temporal expression that specifies an exact date, a month or a year, will be categorized as a TIMEX3 of type “DATE”. For example:
+	- The patient was brought to the operating room on [05-04-1998].
+	- Since [March], he has not experienced any symptoms.
+	- He had decompensation of his cirrhosis in [2005]
+
+#### 4.2.1.2 TIME
+Some temporal expressions specify the time point within a day, e.g., 3pm, 4:55, and so on. These temporal expressions are categorized as TIMEX3s of type “TIME”. For example:
+	- The patient was taken to the operation room at [10 o’clock]. 
+	- At [09-26-2001 5:00pm], the patient passed away.
+
+#### 4.2.1.3 DURATION
+Another TIMEX3 type that often appears in the records is a duration. TIMEX3s of type “DURATION” are temporal expressions that specify a period of time. For example:
+	- Within [the first few days] after the surgery , his liver function tests were elevated 
+	- His hematocrit was checked [two weeks] prior to admission
+	- She reports a 5 pound weight loss over [the past several months]
+
+#### 4.2.1.4 FREQUENCY
+In clinical records, the frequency of symptoms or medication usage is important information, and hence should be annotated. These are annotated with TIMEX3 of type “FREQUENCY”.
+	- She has been ambulating on her own [several times a day] .
+	- The patient was discharged to home on Amiodarone 200 mg [daily] 
+	- The patient was started on Propafenone 300 mg [t.i.d.]
+
+### 4.2.2 Val attribute
+We use a wide variety of phrases and expressions when we describe temporal information. For example, we can easily come up with a number of ways to describe Dec 25 2010, e.g. 2010- 12-25, 12/25/2010, last Christmas. These various forms of temporal phrases need to be normalized in order for machines to understand and process them. The purpose of the val (i.e. value) field of the TIMEX3, is to store the temporal information in a standard, normalized format. More specifically, we use the ISO 8601 standard to encode the temporal information in these guidelines. We will discuss the encoding in detail in the following sections.
+For each TIMEX3 entity, you need to determine its value representation based on the rules below, and fill out the “VAL” field in MAE.
+
+#### 4.2.2.1 Date Value Representation
+The format of calendar date in ISO 8601 is: [YYYY]-[MM]-[DD] (without the brackets). If the temporal expression doesn’t include the exact date information, the format [YYYY]-[MM] is allowed. If the temporal expression only includes the year information, you can simply put [YYYY]in the val field.
+	- The patient was brought to the operating room on [05-04-1998]. (val=”1998-05-04”)
+	- Since [March], he has not experienced any symptoms. (val=”2005-03”, the year information here is derived from the context)
+	- He had decompensation of his cirrhosis in [2005] (val=”2005”)
+
+#### 4.2.2.2 Time Value Representation
+We use the extended time format of ISO 8601 for annotation, specified as: [hh]:[mm]:[ss]. [hh] (without the brackets)ranges from 00 to 24 (where 24 is only used to represent the end point of a calendar day, and the hours are zero-padded, e.g. 9 am -> 09); [mm] and [ss] both range from 00 to 59, zero-padded, and represent minutes and seconds respectively. For reduced accuracy, [ss] and/or [mm] can be omitted, i.e. [hh] and [hh]:[mm] are allowed.
+A combined date and time representation follows the format [YYYY]-[MM]-[DD]T[hh]:[mm]:[ss]. In your annotation, if a time expression can be anchored to a specific date, as is usually the case (see the examples below), make sure to include the date information in the val field as well.
+Examples:
+	- The patient was taken to the operation room at [10 o’clock].
+		(If the date of the operation can be determined from the context (which is usually the case), then the date info should be included in the val field, the val =”2004-09-27T10:00”. Otherwise, val = “T10:00”)
+	- At [09-26-2001 5:00pm], the patient passed away. (val = “2001-09-26T17:00”) Midnight on Dec 20, 2001 (val = 2001-12-20T24:00) .
+		(NOTE: “2001-12-20T24:00” is Dec 20, 2001, the end of day; “2001-12-21T0:00” is the beginning of Dec 21, 2001. These two notations therefore describe the same time point.)
+
+#### 4.2.2.3 Duration Representation
+Durations are temporal expressions that describe a period of time, e.g. for eleven days, for half a year. The syntax of duration representation is P[n][Y/M/W/D]. So, “for eleven days” will be represented as “P11D”, meaning a period of 11 days. The [n] field doesn’t have to be an integer; “P0.5Y” is a valid notation for a period of half a year. The designators can be combined to express a compound period, so “P2M3D” means a period of 2 months and 3 days. As tabulated below, the designator “M” can mean both “month” and “minute”. In order to differentiate, we use the “T” designator to signal time periods, e.g. “P20M” = 20 month, “PT20M” = 20 minutes.
+
+| designator | meaning |
+| -------------- | ----------- |
+| P | Period |
+| Y | Year |
+| M |.Month |
+| W |.Week |
+| D |.Day |
+| T |.Time |
+| H |.Hour |
+| M |.Minute |
+| S |.Second |
+
+Below are some examples:
+	- Within [the first few days] after the surgery , his liver function tests were elevated (val = “P2D”, the phrase ‘few days’ or ‘a couple days’ are mapped approximately to 2 days with the APPROX mod(in section 4.3).)
+	- His hematocrit was checked [two weeks] prior to admission (val = “P2W”)
+	- She reports a 5 pound weight loss over [the past several months] (val = “P3M” mod =”APPROX”)
+
+#### 4.2.2.4 FREQUENCY Representation
+The frequency of events can be represented by using the ISO 8601 repeated intervals. The ISO repeated interval syntax is: R[n][duration], where n denotes the number of repeats. When the n is omitted, the expression denotes an unspecified amount of repeats. For example, “once a day for 3 days” is “R3P1D” (repeat the time interval of 1 day (P1D) for 3 times (R3)), twice every day is “RP12H” (repeat every 12 hours). In clinical text, we may see frequencies such as p.r.n (take as needed), which can be represented by “R” (repeat for unspecified times of unspecified duration).
+	- The patient was discharged to home on Amiodarone 200 mg [daily] (val = “RP1D”)
+	- The patient was started on Propafenone 300 mg [t.i.d.] (val = “RPT8H”)
+	- She has been ambulating on her own [several times a day] . (val = “RPT8H”, mod = “APPROX”) B.i.d. (twice daily) (val = RPT12H)
+	- Od/o.p.d. (once daily) (val = RPT24H)
+	- q.a.d. (every other day) (val = RPT48H)
+
+### 4.2.3 Mod attribute
+Sometimes additional information regarding the temporal value of a time expression may be expressed by a modifier. The mod attribute captures this information. The mod attribute can take the following values:
+	- 1. “NA”: the default value, no relevant modifier is present;
+	- 2. “MORE”, means “more than”, e.g. over 2 days (val = P2D, mod = MORE);
+	- 3. “LESS”, means “less than”, e.g. almost 2 months (val = P2M, mod=LESS);
+	- 4. “APPROX”, means “approximate”, e.g. nearly a week (val = P1W, mod=APPROX);
+	- 5. “START”, describes the beginning of a period of time, e.g. Christmas morning, 2005 (val= 2005-12-25, mod= START).
+	- 6. “END”, describes the end of a period of time, e.g. late last year, (val = 2010, mod = END)
+	- 7. “MIDDLE”, describes the middle of a period of time, e.g. mid-September 2001 (val =2001-09, mod= MIDDLE)
+
+## 4.3 Annotating Relative Time
+In natural language, we do not always use absolute date/time (with explicit calendar date or time information). Instead, we often use relative time or date, such as, “last Friday”, “my 21st birthday”, “one day prior to admission”, and so on. These relative temporal expressions also need to be marked as TIMEX3s. Below are some examples:
+	- On [the day] of discharge his hematocrit was 27.4 compared to 27.9 from [the previous day]. 
+	- The patient is [now] in stable condition.
+
+# 7 Special Cases
+## Aspectual verbs
+Aspectual verbs are verbs that indicate the aspect of another EVENT. Some examples of these verbs are “begin”, “start”, “end”, “stop” and so on. In this annotation task, we do not mark these verbs as EVENTs.
+
+## 7.2 Preoperative and Postoperative EVENTS
+In discharge summaries, we often see words that have the “pre-” or “post-” prefix, such as “preoperative work up”, “postoperatively” and so on. These words are signals for a temporal relation that needs to be marked. In the following example, the range indicated by [] should be tagged as EVENT.
+[His preoperative workup] was completed and included [a normal white count]. On 09-05-96 the patient was brought to the [operating room]
+[The surgery] was performed on 07-26-03.
+Postoperatively, the patient had no [complication].
+In very rare cases, the words “preoperative” or “postoperative” appear, but in the text, there is no reference to the operation. In such cases, when there is no text span (“the surgery” or the “operation”) to which we can assign an EVENT tag, we will mark the word “preoperative” or “postoperative” itself as an EVENT.
+
+# Appendix. Default Values for Attributes
+When tags are created in the annotation tool, some attributes are assigned default values. These values need to be manually changed or verified for each tag. We give the default values for different attributes in the below.
+| Tag | Attribute | Default value |
+|------ | ----------- | ------------------|
+| Event | type | OCCURRENCE |
+| | polarity | POS |
+| | modality | FACTUAL |
+|TIMEX3 | type | DATE |
+| | val | |
+| | mod | NA |

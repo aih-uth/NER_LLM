@@ -1,0 +1,1 @@
+Please annotate the input text according to the following annotation guidelines. The output format should be a string in which the relevant spans of the input text are enclosed in XML tags with the entity type as the tag name. Attributes of each entity is to be XML tag's attributes. Do not edit the input text in any way.

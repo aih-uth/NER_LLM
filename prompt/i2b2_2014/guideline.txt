@@ -1,0 +1,140 @@
+# TASK DESCRIPTION
+HIPAA requires that patient medical records have all identifying information removed in order to protect patient privacy. There are 18 categories of Protected Health Information (PHI) identifiers of the patient or of relatives, employers, or household members of the patient that must be removed in order for a file to be considered de-identified.
+In order to de-identify the records, each file must have the PHI marked up so that it can be removed/replaced later. This will be done using a graphical interface, and all PHI will be given an XML tag indicating its category and type, where applicable.
+For the purposes of this annotation project, the 18 categories have been expanded to include.
+more specific identifiers, which have been grouped into 6 larger categories. These are:
+ - NAME
+     - value of TYPE attribute
+         - PATIENT: patient
+        - DOCTOR: doctor
+        - USERNAME: username
+ - PROFESSION
+ - LOCATION
+     - value of TYPE attribute
+        - ROOM: room
+        - DEPARTMENT: department 
+        - HOSPITAL: hospital
+        - ORGANIZATION: organization
+        - STREET: street
+        - CITY: city
+        - STATE: state
+        - COUNTRY: country
+        - ZIP: ZIP
+        - LOCATION-OTHER: other
+ - AGE
+ - DATE
+ - CONTACT
+     - value of TYPE attribute
+        - PHONE: telephone
+        - FAX: fax
+        - EMAIL: email
+        - URL: URL
+        - IPADDR: IP address
+ - ID
+     - value of TYPE attribute
+         - SSN
+         - MEDICALRECORD: record id
+         - HEALTHPLAN: health plan/insurance id
+         - ACCOUNT: account number
+         - LICENSE: certificate/license number
+         - VEHICLE: car id
+         - DEVICE: device id
+         - BIOID: biometric id
+         - IDNUM: other id number
+ - OTHER
+
+# ANNOTATION NOTES
+ - General:
+   - Only annotate the information that would need to be replaced when the file is re-identified.
+   - When in doubt, annotate!
+   - When tagging something that is PHI but it’s not obvious what to tag it as, think about what it should be replaced by, and whether that will make sense in the document
+   - ORGANIZATION tags will be replaced with a company name, like Google. So try not to use that for medical facilities.
+     - PROFESSION tags will be replaced with job names, like “lawyer”
+     - “lawyer at Harvard” should be tagged as “PROFESSION at ORGANIZATION”
+     - DEPARTMENT tags will be replaced with something like “internal medicine”
+     - HOSPITAL tags will be replaced with things that sound like hospitals. Use this if there’s a name of a medical facility and you’re not sure if it should be a HOSPITAL or a DEPARTMENT, you should probably go with HOSPITAL. For example: I would tag “MGH Everett Family Center” as two hospitals: one tag for MGH, the other for “Everett Family Center”; that way MGH is consistently replaced in the document and “Everett Family Center” can be replaced with a different phrase
+     - “Bigelow C” should be tagged as ‘<LOCATION TYPE=“HOSPITAL”>Bigelow</LOCATION> <LOCATION TYPE=“ROOM”>C</LOCATION>’
+
+ - Names:
+  - Annotate initials at end of documents – even ones that don’t seem to match any names
+  - Titles (Dr., Mr., Ms., etc.) do not have to be annotated.
+  - Information such as “M.D.”, “R.N.” do not have to be annotated
+  - If a name is possessive (e.g., Sam’s) do not annotate the ’s
+  - the USERNAME tag should only be used for names that follow the Partners username standard: initials followed by numbers (i.e., arw4)
+    - In “entered by gsmith”, the “gsmith” should be tagged as a Doctor, not a username
+
+ - Profession:
+  - Any job that is mentioned that is not held by someone on the medical staff should be tagged
+
+ - Dates:
+  - Any calendar date, including years, seasons, months, and holidays, should be annotated
+  - Days of the week should also be annotated
+  - Do not include time of day
+  - If the phrase has ’s (i.e., “in the ’90s), annotate “’90s”
+  - Include annotations of seasons (“Fall ’02”)
+  - Include quote marks that stand in for years (“’92”)
+
+ - Locations:
+  - Hospital room numbers should be annotated as ROOM
+  - Floors and suites can also be annotated as ROOM
+    - “Floor 2, room 254” can all be one ROOM tag
+  - Annotate state/country names as well as addresses and cities. Each part of an address will get its own tag. For example:
+  	- input: 32 Vassar Street Cambridge MA 02142 USA
+    - output: <LOCATION TYPE=“STREET”>32 Vassar Street</LOCATION> <LOCATION TYPE=“CITY”>Cambridge</LOCATION> <LOCATION TYPE=“STATE”>MA</LOCATION> <LOCATION TYPE=“ZIP”>02142</LOCATION> <LOCATION TYPE=“COUNTRY”>USA</LOCATION>
+  - The departments inside of hospitals should be annotated, but only if they are unique. There is a list of generic hospital units at the end of this file; if a department is not on that list, it should be annotated.
+  - If in doubt, annotate
+  - Generic locations like “hair salon” do not need to be annotated, but named organizations (i.e., “Harvard University”) do
+
+ - Age:
+  - Annotate all ages, not just those over 90, including those for patient’s families if they are mentioned
+
+ - Contact:
+  - Pager numbers should be annotated as phone numbers
+
+ - IDs:
+  - When in doubt, call something a record ID
+  - Doctor or nurse IDs should be annotated as “other id”
+  - No need to label names of devices (for example: “25 mm Carpentier-Edwards magna valve”, “3.5 mm by 32 mm Taxus drug-eluting stent”, Angioseal”)
+
+# TASK PROCEDURE
+Each file being de-identified will be reviewed by two annotators. Every piece of information that meets the criteria for PHI should be tagged using the appropriate annotation tag, and then the type of PHI should be indicated where appropriate.
+
+# GENERIC HOSPITAL DEPARTMENTS
+ - Acute assessment unit
+ - Cardiology
+ - Coronary care unit/CCU
+ - Critical care
+ - Ear nose and throat (ENT)
+ - Emergency department/ED
+ - Emergency room/ER
+ - Emergency ward/EW
+ - Gastroenterology
+ - General surgery
+ - Geriatric intensive-care unit
+ - Gynaecology
+ - Haematology
+ - Intensive care unit (ICU)
+ - Internal medicine
+ - Maternity
+ - Medical records department
+ - Neonatal unit
+ - Neonatal intensive care unit (NICU)
+ - Nephrology
+ - Neurology
+ - Obstetrics
+ - Occupational therapy
+ - Oncology
+ - Operating room/OR
+ - Ophthalmology
+ - Orthopaedics
+ - Pediatric intensive care unit (PICU)
+ - Pharmacy
+ - Physical therapy
+ - Post-anesthesia care unit
+ - Psychiatric Unit/Psychiatry
+ - Radiology
+ - Rheumatology
+ - Surgery
+ - Urgent care
+ - Urology
+ 

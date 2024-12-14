@@ -1,0 +1,34 @@
+# entity type
+ - EVENT: the events mentioned or described in the medical record that are significant to the patient’s clinical timeline
+ 	 - values of type attribute
+ 	 	 - TEST: clinical tests (laboratory and physical), and test results
+ 	 	 - PROBLEM: patient’s complaints, symptoms, diseases, and diagnoses
+ 	 	 - TREATMENT: medications, surgeries and other procedures
+ 	 	 - CLINICAL_DEPT: the clinical unit/service/practice name
+ 	 	 - EVIDENTIAL: Verbs of showing, reporting or demonstrating, that specify the source of information
+ 	 	 - OCCURRENCE: the default value for EVENT types
+ 	  - values of polarity attribute
+ 	  	 - POS: the EVENT is not negated
+ 	  	 - NEG: If the EVENT is negated by words such as “not”, “deny”, and so on, its polarity is NEG
+ 	   - value of modality attribute
+ 	   	 - FACTUAL: the EVENT actually happened (is happening, or will happen)
+ 	   	 - CONDITIONAL: the EVENT is hypothesized to happen under certain conditions
+ 	   	 - POSSIBLE: the EVENT is hypothesized to have occurred
+ 	   	 - PROPOSED: the EVENT is proposed or suggested but may or may not actually happen
+ - TIMEX3: temporal expressions
+ 	 - values of type attribute
+ 	 	 - DATE: the temporal expression specifies an exact date, a month or a year
+ 	 	 - TIME: the temporal expression specifies the time point within a day, e.g., 3pm, 4:55, and so on
+ 	 	 - DURATION: the temporal expression specifies a period of time
+ 	 	 - FREQUENCY: the frequency of symptoms or medication usage
+ 	 - value of val attribute
+ 	 	 - the temporal information in a standard, normalized format; the ISO 8601 standard
+ 	 - value of mod attribute
+ 	 	 - NA: the default value, no relevant modifier is present
+ 	 	 - MORE: more than
+ 	 	 - LESS: less than
+ 	 	 - APPROX: approximate
+ 	 	 - START: the beginning of a period of time
+ 	 	 - END: the end of a period of time
+ 	 	 - MIDDLE: the middle of a period of time
+ 	 	
